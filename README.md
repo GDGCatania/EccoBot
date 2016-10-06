@@ -1,6 +1,8 @@
 # EccoBot
 This bot periodically crawls a NodeBB forum and sends new posts to a specified telegram group
 
+Why that strange name? Because when you see a new post, you will say: "ecco!" Thus, **EccoBot**. 
+
 Useful docs/links:
 
 http://forum.gdgcatania.org/api/recent/posts
