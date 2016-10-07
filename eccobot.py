@@ -15,6 +15,7 @@ config.read(CONFIG_FILE)
 LOG_FILE = config.get('log', 'name')
 FORUM_URL = config.get('forum', 'url')
 FORUM_FREQUENCY_S = config.get('forum', 'frequency_s')
+FORUM_POSTTIME_BARRAGE_S = config.get('forum', 'posttime_barrage_s')
 DB_USER = config.get('db', 'user')
 DB_PASSWORD = config.get('db', 'password')
 DB_NAME = config.get('db', 'name')
@@ -37,6 +38,7 @@ bot = telegram.Bot(token=TELEGRAM_TOKEN)
 
 def message(message):
 	"""Send an update to the chat"""
+	logger.info("Sending message:"+CHANNEL+"  "+message)
 	bot.sendMessage(chat_id=CHANNEL, text=message, 
 		parse_mode=telegram.ParseMode.MARKDOWN)
 
@@ -52,16 +54,17 @@ while True:
 	
 	posts = json.load(response)   
 	
+	#TODO Controllare se gli ultimi post sono già stati inviati,altrimenti è inutile inviare un messaggio disturbando con una notifica.
+	message('Hey,sono tornato! Ci sono nuovi post sul forum per te...')
+	
 	for post in posts:
 		title = post['topic']['title']
 		url = FORUM_URL + '/topic/' + post['topic']['slug']
 		time = getPostTime(post)
 
-		# Subtracting one hour because running this in the UK. 
-		# TODO: get time zone from timestamp
-		if (check_time - time).total_seconds() - 3600 < float(FORUM_FREQUENCY_S) :
-			message('Ciao! *Ecco* un nuovo post sul forum\n: *' + title + 
-				'* at this link: ' + url)
+		if (check_time - time).total_seconds() < float(FORUM_POSTTIME_BARRAGE_S) :
+			message('*Ecco* un nuovo post nel forum\n: *' + title + 
+				'* a questo link: ' + url)
 
 	logger.info('I am going to sleep for a bit. Bye!')
 	t.sleep(float(FORUM_FREQUENCY_S))
