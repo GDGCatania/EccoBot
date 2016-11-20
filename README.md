@@ -38,6 +38,10 @@ http://forum.gdgcatania.org/api/recent/posts
 
 https://github.com/NodeBB/NodeBB/blob/72c75bd7813b2bb41dc175ce6f7fe9fa58eed006/src/routes/api.js
 
+Via RSS: http://forum.gdgcatania.org/recent.rss
+
+Possible to have pagination too, but should be enabled by the forum admins. See post: https://community.nodebb.org/topic/8485/get-all-posts/9
+
 ## TODO
 
 - Read configuration from file
